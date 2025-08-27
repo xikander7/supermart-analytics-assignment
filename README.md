@@ -21,3 +21,19 @@ The goal is to **clean, normalize, and transform** raw datasets, apply **machine
 /report # BRD and Business Report (PDF)
 README.md # Project instructions
 requirements.txt # Python dependencies
+
+
+##  Tech Stack
+- Python (Pandas, NumPy, Matplotlib, Seaborn, Scikit-learn, Plotly)
+- Jupyter Notebooks
+- GitHub for version control & documentation
+
+## Deliverables
+- Cleaned datasets & processing pipeline
+- Supervised learning models with evaluation metrics
+- Business insights & recommendations (PDF report)
+- Maze RL model
+
+##  Author
+Maintained by **Syed Shah**  
+
