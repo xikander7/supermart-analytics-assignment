@@ -2,7 +2,7 @@
 Project: Supermart Analytics Assignment
 Author: Syed Shah
 Version: 1.0
-Date: <today>
+Date: 8/27/2025
 
 ## 1. Background
 Supermart provides transactional sales data, item attributes, promotions, and store attributes. The client wants a reliable dataset, clear insights, and simple models to support promotion planning and store management.
