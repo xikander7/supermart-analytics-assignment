@@ -205,3 +205,9 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+# Ignore large derived data
+/data/cleaned_*.csv
+/data/*.parquet
+/data/*.feather
+
