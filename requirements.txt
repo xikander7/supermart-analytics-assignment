@@ -1,7 +1,9 @@
-pandas
-numpy
-matplotlib
-seaborn
-scikit-learn
-mlxtend
-plotly
+pandas>=2.0
+numpy>=1.26
+scikit-learn>=1.5
+matplotlib>=3.8
+seaborn>=0.13
+jupyterlab>=4.0
+ipykernel>=6.29
+pyarrow>=16.0
+joblib>=1.4

@@ -1,39 +1,77 @@
-# supermart-analytics-assignment
-Data Engineering &amp; Analytics assignment on supermarket transactions. Includes data cleaning, machine learning models for sales forecasting and promotion effectiveness, and a business insights report.
+# Supermart Analytics Assignment
 
-##  Overview
-This project analyzes supermarket transaction data collected over two years.  
-The goal is to **clean, normalize, and transform** raw datasets, apply **machine learning models**, and extract **business insights** to support decision-making.
+This repository scaffold is set up to complete **Task 1** (supervised learning on supermarket transactions) and the **optional Task 2** (maze navigation / RL). Drop your CSVs into `data/raw/` and follow the steps below.
 
-##  Project Objectives
-- Data cleaning & preprocessing of Items, Sales, Promotions, and Supermarkets datasets.
-- Build supervised learning models to:
-  - Forecast sales during promotional periods.
-  - Evaluate promotion effectiveness.
-  - Identify high-performing supermarkets.
-- Deliver at least two **business-valued insights** with clear recommendations.
-- (Optional) Reinforcement learning maze agent as a demonstration of advanced ML techniques.
+## Quickstart
 
-##  Repository Structure
-/data # Raw and cleaned datasets
-/notebooks # Jupyter notebooks for EDA and ML models
-/scripts # Reusable Python scripts
-/report # BRD and Business Report (PDF)
-README.md # Project instructions
-requirements.txt # Python dependencies
+```bash
+# 1) Create a virtual environment (optional but recommended)
+python -m venv .venv && source .venv/bin/activate   # macOS/Linux
+# On Windows: .venv\Scripts\activate
 
+# 2) Install dependencies
+pip install -r requirements.txt
 
-##  Tech Stack
-- Python (Pandas, NumPy, Matplotlib, Seaborn, Scikit-learn, Plotly)
-- Jupyter Notebooks
-- GitHub for version control & documentation
+# 3) Open notebooks
+jupyter lab  # or: jupyter notebook
+```
 
-## Deliverables
-- Cleaned datasets & processing pipeline
-- Supervised learning models with evaluation metrics
-- Business insights & recommendations (PDF report)
-- Maze RL model
+Place these files in `data/raw/`:
+- `Items.csv`
+- `Sales.csv`
+- `Promotion.csv`
+- `Supermarkets.csv`
 
-##  Author
-Maintained by **Syed Shah**  
+> Processed/cleaned outputs will be written to `data/processed/` by the scripts.
 
+## Project Structure
+
+```
+supermart-assignment/
+  data/
+    raw/            # put original CSVs here
+    processed/      # cleaned/transformed outputs
+  notebooks/
+    00_eda.ipynb
+    01_modeling.ipynb
+  scripts/
+    data_cleaning.py
+    feature_engineering.py
+    train_model.py
+    generate_insights.py
+    maze_model.py        # optional RL task
+  report/
+    figures/
+    report_template.md
+  src/
+    io_utils.py
+    metrics.py
+  README.md
+  requirements.txt
+  .gitignore
+```
+
+## Minimal Run (CLI)
+
+```bash
+# Clean + validate + output parquet/csv to data/processed
+python scripts/data_cleaning.py
+
+# Build features to data/processed/features.parquet
+python scripts/feature_engineering.py
+
+# Train a baseline model and save to data/processed/model.joblib
+python scripts/train_model.py
+
+# Generate business insights to report/figures and data/processed/insights/**
+python scripts/generate_insights.py
+```
+
+## Notes
+- Keep the code **explainable**; you may be asked to walk through it.
+- Start simple (baseline linear/regression) and iterate.
+- Treat `01_modeling.ipynb` as your scratchpad for model comparison and charts; keep `scripts/` reproducible.
+
+---
+
+**Generated:** 2025-08-29T04:16:20
