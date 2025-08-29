@@ -1,62 +1,90 @@
-#!/usr/bin/env python3
-"""
-Data cleaning & normalization.
-- Reads Items.csv, Sales.csv, Promotion.csv, Supermarkets.csv from data/raw
-- Performs light validation & dtype normalization
-- Writes cleaned parquet files to data/processed
+"""Data cleaning: reads CSVs from data/raw, standardizes schema and saves parquet files.
+If CSVs are missing, generates tiny synthetic data to ensure the pipeline runs.
 """
 
+import numpy as np
 import pandas as pd
-from src.io_utils import read_csv_safe, write_df
+from pathlib import Path
+from src.io import load_csv_or_none, write_table, ITEMS, SALES, PROMO, STORES
+from src.utils import PROC, RAW, ensure_dirs
 
-def normalize_items(df: pd.DataFrame) -> pd.DataFrame:
-    df.columns = [c.strip().lower().replace(" ", "_") for c in df.columns]
-    if "code" in df.columns:
-        df["code"] = df["code"].astype(str).str.strip()
-    # Optional: size numeric extraction
-    if "size" in df.columns:
-        # Try to coerce numeric part
-        df["size"] = pd.to_numeric(df["size"], errors="coerce")
-    return df
+RNG = np.random.default_rng(7)
 
-def normalize_sales(df: pd.DataFrame) -> pd.DataFrame:
-    df.columns = [c.strip().lower().replace(" ", "_") for c in df.columns]
-    for c in ["amount", "units"]:
-        if c in df.columns:
-            df[c] = pd.to_numeric(df[c], errors="coerce")
-    time_cols = ["time_of_transactions", "transaction_time", "time"]
-    for tcol in time_cols:
-        if tcol in df.columns:
-            df[tcol] = pd.to_datetime(df[tcol], errors="coerce", utc=False)
-            df = df.rename(columns={tcol: "transaction_time"})
-            break
-    return df
+def synthesize():
+    # items
+    items = pd.DataFrame({
+        "Code": [f"I{i:04d}" for i in range(50)],
+        "Description": [f"Item {i}" for i in range(50)],
+        "Type": RNG.choice(["Type 1","Type 2","Type 3","Type 4"], size=50),
+        "Brand": RNG.choice(["Alpha","Beta","Gamma","Delta"], size=50),
+        "Size": RNG.choice(["S","M","L"], size=50),
+    })
+    # stores
+    stores = pd.DataFrame({
+        "Supermarket No": [f"S{j:03d}" for j in range(10)],
+        "Post-code": RNG.integers(10000, 99999, size=10).astype(str)
+    })
+    # promo
+    promo = []
+    for code in items['Code'].sample(30, replace=False, random_state=7):
+        for s in stores['Supermarket No']:
+            promo.append([code, s, RNG.integers(1, 53), RNG.integers(0,2), RNG.integers(0,2), "P1"])
+    promo = pd.DataFrame(promo, columns=["Code","Supermarket No","Week","Feature","Display","Province"])
 
-def normalize_promotion(df: pd.DataFrame) -> pd.DataFrame:
-    df.columns = [c.strip().lower().replace(" ", "_") for c in df.columns]
-    for c in ["feature", "display"]:
-        if c in df.columns:
-            df[c] = df[c].astype(str).str.strip().str.lower()
-    return df
+    # sales
+    rows = []
+    for _ in range(2000):
+        code = items['Code'].iloc[RNG.integers(0, len(items))]
+        s = stores['Supermarket No'].iloc[RNG.integers(0, len(stores))]
+        day = pd.Timestamp("2024-01-01") + pd.Timedelta(days=int(RNG.integers(0, 365)))
+        week = int(pd.Timestamp(day).isocalendar().week)
+        has_promo = ((promo['Code']==code) & (promo['Supermarket No']==s) & (promo['Week']==week)).any()
+        base = float(RNG.normal(5, 2))
+        uplift = 2.0 if has_promo else 0.0
+        units = max(0, base + uplift + float(RNG.normal(0, 1)))
+        amount = units * float(RNG.uniform(2.0, 20.0))
+        rows.append([code, amount, units, day, "P1", f"C{RNG.integers(1,1000)}", s, f"B{RNG.integers(1,400)}", day.day_name(), "N"])
+    sales = pd.DataFrame(rows, columns=["Code","Amount","Units","Time","Province","CustomerId","Supermarket No","Basket","Day","Voucher"])
 
-def normalize_supermarkets(df: pd.DataFrame) -> pd.DataFrame:
-    df.columns = [c.strip().lower().replace(" ", "_") for c in df.columns]
-    if "post-code" in df.columns:
-        df = df.rename(columns={"post-code": "post_code"})
+    items.to_csv(RAW / "Items.csv", index=False)
+    stores.to_csv(RAW / "Supermarkets.csv", index=False)
+    promo.to_csv(RAW / "Promotion.csv", index=False)
+    sales.to_csv(RAW / "Sales.csv", index=False)
+
+def standardize(df):
+    df.columns = [c.strip().title() for c in df.columns]
     return df
 
 def main():
-    items = normalize_items(read_csv_safe("Items.csv"))
-    sales = normalize_sales(read_csv_safe("Sales.csv"))
-    promo = normalize_promotion(read_csv_safe("Promotion.csv"))
-    supers = normalize_supermarkets(read_csv_safe("Supermarkets.csv"))
+    ensure_dirs()
+    items = load_csv_or_none(ITEMS)
+    sales = load_csv_or_none(SALES)
+    promo = load_csv_or_none(PROMO)
+    stores = load_csv_or_none(STORES)
 
-    write_df(items, "items.parquet")
-    write_df(sales, "sales.parquet")
-    write_df(promo, "promotion.parquet")
-    write_df(supers, "supermarkets.parquet")
+    if any(x is None for x in [items, sales, promo, stores]):
+        print("⚠️  Raw CSVs missing — generating small synthetic dataset for demo.")
+        synthesize()
+        items = pd.read_csv(ITEMS)
+        sales = pd.read_csv(SALES)
+        promo = pd.read_csv(PROMO)
+        stores = pd.read_csv(STORES)
 
-    print("✅ Cleaned files written to data/processed/*.parquet")
+    # Basic cleanup
+    for df in [items, sales, promo, stores]:
+        df.drop_duplicates(inplace=True)
+        df = df.applymap(lambda x: x.strip() if isinstance(x, str) else x)
+
+    # Types
+    if "Time" in sales.columns:
+        sales["Time"] = pd.to_datetime(sales["Time"], errors="coerce")
+
+    # Save as parquet
+    write_table(items, "items")
+    write_table(sales, "sales")
+    write_table(promo, "promotion")
+    write_table(stores, "supermarkets")
+    print("✅ Cleaned files written to data/processed/*.csv")
 
 if __name__ == "__main__":
     main()

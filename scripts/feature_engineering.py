@@ -1,41 +1,26 @@
-#!/usr/bin/env python3
-"""
-Feature engineering:
-- Loads cleaned parquet files
-- Creates modeling table (joined facts + dims + promo)
-- Saves to data/processed/features.parquet
-"""
+"""Join cleaned tables and build a feature matrix (features.csv) + label.csv."""
+import json
 import pandas as pd
-from src.io_utils import PROCESSED_DIR, write_df
+from src.utils import PROC, ensure_dirs
+from src.features import join_all, build_feature_matrix
+from src.io import read_table
 
-def main():
-    items = pd.read_parquet(PROCESSED_DIR / "items.parquet")
-    sales = pd.read_parquet(PROCESSED_DIR / "sales.parquet")
-    promo = pd.read_parquet(PROCESSED_DIR / "promotion.parquet")
-    supers = pd.read_parquet(PROCESSED_DIR / "supermarkets.parquet")
+def main(target='units'):
+    ensure_dirs()
+    items = read_table('items')
+    sales = read_table('sales')
+    promo = read_table('promotion')
+    stores = read_table('supermarkets')
 
-    for df in [items, sales, promo, supers]:
-        if "code" in df.columns:
-            df["code"] = df["code"].astype(str).str.strip()
-        if "supermarket_no" in df.columns:
-            df["supermarket_no"] = df["supermarket_no"].astype(str).str.strip()
+    df = join_all(sales, items, promo, stores)
+    X, y, cols = build_feature_matrix(df, target=target)
 
-    df = sales.merge(items, on="code", how="left")
-    if "supermarket_no" in df.columns and "supermarket_no" in promo.columns:
-        df = df.merge(promo, on=["code","supermarket_no","province"], how="left", suffixes=("","_promo"))
-    if "supermarket_no" in df.columns and "supermarket_no" in supers.columns:
-        df = df.merge(supers, on="supermarket_no", how="left", suffixes=("","_store"))
+    (PROC / "features.csv").parent.mkdir(parents=True, exist_ok=True)
+    X.to_csv(PROC / "features.csv", index=False)
+    y.to_frame("label").to_csv(PROC / "label.csv", index=False)
+    (PROC / "feature_cols.json").write_text(json.dumps(cols, indent=2))
 
-    if "transaction_time" in df.columns:
-        dt = pd.to_datetime(df["transaction_time"], errors="coerce")
-        df["year"] = dt.dt.year
-        df["month"] = dt.dt.month
-        df["weekofyear"] = dt.dt.isocalendar().week.astype("Int64")
-        df["dow"] = dt.dt.dayofweek
-        df["hour"] = dt.dt.hour
-
-    write_df(df, "features.parquet")
-    print("✅ features.parquet created")
+    print(f"✅ features.csv created with {X.shape[0]:,} rows and {X.shape[1]:,} columns. Target = {target}")
 
 if __name__ == "__main__":
     main()

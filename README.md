@@ -1,77 +1,93 @@
 # Supermart Analytics Assignment
 
-This repository scaffold is set up to complete **Task 1** (supervised learning on supermarket transactions) and the **optional Task 2** (maze navigation / RL). Drop your CSVs into `data/raw/` and follow the steps below.
+A clean, **human-readable** end-to-end pipeline for the supermarket assignment:
+- Data cleaning → feature engineering → model training → business insights.
+- Optional **maze RL** toy example to showcase broader ML skills.
+- Auto-fallback: if raw CSVs are missing, the pipeline generates **small synthetic data**
+  so everything still runs and produces charts + a PDF report.
 
-## Quickstart
-
-```bash
-# 1) Create a virtual environment (optional but recommended)
-python -m venv .venv && source .venv/bin/activate   # macOS/Linux
-# On Windows: .venv\Scripts\activate
-
-# 2) Install dependencies
-pip install -r requirements.txt
-
-# 3) Open notebooks
-jupyter lab  # or: jupyter notebook
-```
-
-Place these files in `data/raw/`:
-- `Items.csv`
-- `Sales.csv`
-- `Promotion.csv`
-- `Supermarkets.csv`
-
-> Processed/cleaned outputs will be written to `data/processed/` by the scripts.
-
-## Project Structure
+## Repo Structure
 
 ```
-supermart-assignment/
+supermart-analytics-assignment/
   data/
-    raw/            # put original CSVs here
-    processed/      # cleaned/transformed outputs
+    raw/            # Place Items.csv, Sales.csv, Promotion.csv, Supermarkets.csv here
+    processed/      # Auto-generated parquet/feature files
   notebooks/
-    00_eda.ipynb
-    01_modeling.ipynb
+    00_quick_eda.ipynb        # (placeholder)
   scripts/
     data_cleaning.py
     feature_engineering.py
     train_model.py
     generate_insights.py
-    maze_model.py        # optional RL task
-  report/
-    figures/
-    report_template.md
+    maze_rl.py
   src/
-    io_utils.py
+    io.py
+    features.py
+    modeling.py
     metrics.py
-  README.md
+    plots.py
+    utils.py
+  report/
+    report.pdf
+    figures/*.png
   requirements.txt
-  .gitignore
+  run_all.sh
+  run_all.bat
+  README.md
 ```
 
-## Minimal Run (CLI)
+## How to Run (Linux/Mac)
 
 ```bash
-# Clean + validate + output parquet/csv to data/processed
+python -m venv .venv && source .venv/bin/activate
+pip install -r requirements.txt
+export PYTHONPATH=$(pwd)
 python scripts/data_cleaning.py
-
-# Build features to data/processed/features.parquet
 python scripts/feature_engineering.py
-
-# Train a baseline model and save to data/processed/model.joblib
 python scripts/train_model.py
-
-# Generate business insights to report/figures and data/processed/insights/**
 python scripts/generate_insights.py
+# optional
+python scripts/maze_rl.py
 ```
 
-## Notes
-- Keep the code **explainable**; you may be asked to walk through it.
-- Start simple (baseline linear/regression) and iterate.
-- Treat `01_modeling.ipynb` as your scratchpad for model comparison and charts; keep `scripts/` reproducible.
+## How to Run (Windows PowerShell)
+
+```powershell
+python -m venv .venv; .\.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+$env:PYTHONPATH = (Get-Location).Path
+python scripts\data_cleaning.py
+python scripts\feature_engineering.py
+python scripts\train_model.py
+python scripts\generate_insights.py
+# optional
+python scripts\maze_rl.py
+```
+
+## Expected Inputs
+
+Place the CSVs (exact names) into `data/raw/`:
+
+- `Items.csv` — columns: `Code, Description, Type, Brand, Size`
+- `Sales.csv` — columns: `Code, Amount, Units, Time, Province, CustomerId, Supermarket No, Basket, Day, Voucher`
+- `Promotion.csv` — columns: `Code, Supermarket No, Week, Feature, Display, Province`
+- `Supermarkets.csv` — columns: `Supermarket No, Post-code`
+
+> **No data?** No problem. The pipeline will auto-create tiny synthetic versions so you can demo end-to-end immediately.
+
+## Deliverables
+- **report/report.pdf** — auto-generated, includes: problem setup, methodology, model metrics, feature importances, promo lift, store performance, and bonus maze RL.
+- **report/figures/*.png** — charts saved for quick review.
+- **data/processed/** — cleaned CSV/PKL tables + `features.csv` and `label.csv`.
+
+## Notes for Interview / Client
+- The code is **commented** and intentionally straightforward (pandas + scikit-learn + matplotlib).
+- Models: baseline + `RandomForestRegressor` (predicts `Units`). Swap target to `Amount` via CLI flag if desired.
+- Business insights focus on **promotion lift** and **store ranking**. The implementation is modular so you can
+  plug in additional features (e.g., weather, holidays) in `src/features.py`.
 
 ---
 
-**Generated:** 2025-08-29T04:16:20
+**Reference:** The repo is aligned to the assignment brief you shared (datasets, supervised learning task, PDF report, and optional RL maze demo).
+
