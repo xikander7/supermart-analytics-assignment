@@ -1,11 +1,13 @@
-# Python
+# Python / venv / caches
+.venv/
 __pycache__/
 *.pyc
-.venv/
-.env
+
+# Jupyter
 .ipynb_checkpoints/
 
-# Data/artifacts
-data/processed/
-report/figures/
-*.joblib
+# OS junk
+.DS_Store
+
+# Outputs
+outputs/
