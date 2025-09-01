@@ -1,0 +1,6 @@
+# Git attributes for proper file handling
+*.csv text eol=lf
+*.py text eol=lf
+*.md text eol=lf
+*.txt text eol=lf
+*.ipynb text eol=lf
