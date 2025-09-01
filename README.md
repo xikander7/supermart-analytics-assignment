@@ -23,9 +23,11 @@ supermart-analytics-assignment/
 │   ├── raw/                    # Original CSV datasets
 │   └── processed/              # Cleaned and transformed data
 ├── src/
-│   ├── data_preprocessing.py   # Data cleaning and transformation
-│   ├── supervised_learning.py  # ML models for business insights
-│   └── maze_navigation.py      # Reinforcement learning (optional)
+│   ├── data_preprocessing.py     # Data cleaning and transformation
+│   ├── supervised_learning.py    # ML models for business insights
+│   ├── data_visualization.py     # Comprehensive analytics visualizations
+│   ├── export_visualization_data.py # Export underlying visualization data
+│   └── maze_navigation.py        # Reinforcement learning (optional)
 ├── models/                     # Trained ML models
 ├── notebooks/                  # Jupyter notebooks for analysis
 ├── report/
@@ -99,6 +101,16 @@ python main.py
   python src/maze_navigation.py
   ```
 
+- **Generate comprehensive visualizations**:
+  ```bash
+  python src/data_visualization.py
+  ```
+
+- **Export visualization data files**:
+  ```bash
+  python src/export_visualization_data.py
+  ```
+
 ## Datasets
 The project uses four main datasets:
 - **items.csv**: Product information (code, description, type, brand, size)
@@ -121,7 +133,9 @@ The project uses four main datasets:
 - **Automated data cleaning** with comprehensive error handling
 - **Feature engineering** including seasonal patterns and promotional indicators
 - **Model evaluation** using RMSE, R², and business-relevant metrics
-- **Visualization generation** for insights and model performance
+- **Professional visualization suite** with 7 comprehensive business analytics dashboards
+- **Executive reporting** including KPI summaries and performance rankings
+- **Data export capabilities** providing underlying datasets for all visualizations
 - **Comprehensive logging** for debugging and monitoring
 - **Modular design** for easy maintenance and extension
 
@@ -132,10 +146,33 @@ The project uses four main datasets:
 
 ## Output Files
 After running the analysis, the following files will be generated:
+
+### Processed Data
 - `data/processed/supermarket_data_processed.csv` - Cleaned and merged dataset (137MB, generated locally)
+- `data/processed/visualization_data/*.csv` - 17 analytical datasets supporting visualizations (see below)
+
+### Machine Learning Models
 - `models/*.pkl` - Trained machine learning models
-- `report/figures/*.png` - Visualizations and charts
-- Console output with detailed analysis results and business insights
+
+### Visualizations and Reports
+- `report/figures/*.png` - Professional business analytics visualizations:
+  - `sales_performance_dashboard.png` - Comprehensive sales metrics and trends
+  - `promotional_impact_analysis.png` - Promotion effectiveness analysis
+  - `customer_behavior_analysis.png` - Customer segmentation and loyalty insights
+  - `product_performance_analysis.png` - Product and brand performance rankings
+  - `temporal_trends_analysis.png` - Time-based patterns and seasonality
+  - `store_performance_analysis.png` - Store efficiency and comparison metrics
+  - `business_intelligence_dashboard.png` - Executive KPI summary dashboard
+  - `maze_training_progress.png` & `maze_solution.png` - RL maze navigation results
+
+### Supporting Data Files
+The `data/processed/visualization_data/` directory contains 17 CSV files with underlying data for each visualization:
+- Weekly sales trends and temporal analysis data
+- Provincial and store performance rankings
+- Customer segmentation and value analysis
+- Product and brand performance metrics
+- Promotional effectiveness measurements
+- Business intelligence KPIs and top performers summary
 
 Note: The processed dataset is excluded from the repository due to size constraints but will be generated when you run the pipeline locally.
 

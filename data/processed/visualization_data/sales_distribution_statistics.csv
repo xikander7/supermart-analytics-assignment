@@ -1,0 +1,8 @@
+metric,value
+total_revenue,1867250.9100000001
+average_transaction,1.782707776411463
+median_transaction,1.5
+transaction_count,1047424.0
+min_transaction,0.0
+max_transaction,5900.0
+std_transaction,5.969382554926349

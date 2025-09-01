@@ -81,6 +81,10 @@ Supermart provides transactional sales data, item attributes, promotions, and st
 - `/notebooks/01_data_cleaning.ipynb`
 - `/notebooks/02_exploratory_analysis.ipynb`
 - `/notebooks/03_ml_models.ipynb`
+- `/src/data_visualization.py` - Comprehensive business analytics visualization system
+- `/src/export_visualization_data.py` - Supporting data export module
+- `/data/processed/visualization_data/*.csv` - 17 analytical datasets supporting visualizations
+- `/report/figures/*.png` - 7 professional business intelligence dashboards
 - `/report/business_report.md` and exported figures/tables
 - Updated `README.md` and `.gitignore`
 

@@ -19,6 +19,8 @@ sys.path.append(str(Path(__file__).parent / 'src'))
 from data_preprocessing import SupermarketDataPreprocessor
 from supervised_learning import SupermarketAnalytics
 from maze_navigation import MazeTrainer
+from data_visualization import SupermarketVisualizationAnalysis
+from export_visualization_data import VisualizationDataExporter
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
@@ -174,6 +176,57 @@ def run_maze_navigation():
         logger.error(f"Maze navigation training failed: {e}")
         return False
 
+def run_comprehensive_visualizations():
+    """Run comprehensive data visualization analysis."""
+    logger.info("="*60)
+    logger.info("STEP 4: COMPREHENSIVE DATA VISUALIZATION ANALYSIS")
+    logger.info("="*60)
+    
+    try:
+        # Create visualizations
+        print("\nGenerating comprehensive business analytics dashboards...")
+        print("-"*50)
+        
+        visualizer = SupermarketVisualizationAnalysis()
+        visualizer.load_data()
+        visualizer.create_comprehensive_visualizations()
+        
+        # Export underlying data
+        print("\nExporting visualization data files...")
+        print("-"*50)
+        
+        exporter = VisualizationDataExporter()
+        exporter.load_data()
+        exporter.export_all_visualization_datasets()
+        
+        # Print summary
+        print("\n" + "="*60)
+        print("VISUALIZATION ANALYSIS COMPLETED")
+        print("="*60)
+        print("Generated 7 Professional Business Analytics Dashboards:")
+        print("  ✓ Sales Performance Dashboard")
+        print("  ✓ Promotional Impact Analysis") 
+        print("  ✓ Customer Behavior Analysis")
+        print("  ✓ Product Performance Analysis")
+        print("  ✓ Temporal Trends Analysis")
+        print("  ✓ Store Performance Analysis")
+        print("  ✓ Business Intelligence Dashboard")
+        print("\nExported 17 Supporting Data Files:")
+        print("  ✓ Weekly sales trends and temporal analysis data")
+        print("  ✓ Provincial and store performance rankings")
+        print("  ✓ Customer segmentation and value analysis")
+        print("  ✓ Product and brand performance metrics")
+        print("  ✓ Promotional effectiveness measurements")
+        print("  ✓ Business intelligence KPIs and top performers")
+        print("="*60)
+        
+        logger.info("Comprehensive visualization analysis completed successfully!")
+        return True
+        
+    except Exception as e:
+        logger.error(f"Visualization analysis failed: {e}")
+        return False
+
 def main():
     """Main execution function."""
     parser = argparse.ArgumentParser(description='Supermarket Analytics Assignment - Data Engineer Test')
@@ -183,7 +236,9 @@ def main():
                        help='Skip supervised learning analysis')
     parser.add_argument('--skip-maze', action='store_true', 
                        help='Skip maze navigation training')
-    parser.add_argument('--only', choices=['preprocessing', 'ml', 'maze'], 
+    parser.add_argument('--skip-viz', action='store_true', 
+                       help='Skip comprehensive visualization analysis')
+    parser.add_argument('--only', choices=['preprocessing', 'ml', 'maze', 'viz'], 
                        help='Run only the specified component')
     
     args = parser.parse_args()
@@ -204,6 +259,8 @@ def main():
             steps_to_run = ['ml']
         elif args.only == 'maze':
             steps_to_run = ['maze']
+        elif args.only == 'viz':
+            steps_to_run = ['viz']
     else:
         steps_to_run = []
         if not args.skip_preprocessing:
@@ -212,6 +269,8 @@ def main():
             steps_to_run.append('ml')
         if not args.skip_maze:
             steps_to_run.append('maze')
+        if not args.skip_viz:
+            steps_to_run.append('viz')
     
     # Run selected steps
     if 'preprocessing' in steps_to_run:
@@ -232,6 +291,12 @@ def main():
             success_count += 1
         print("\n")
     
+    if 'viz' in steps_to_run:
+        total_steps += 1
+        if run_comprehensive_visualizations():
+            success_count += 1
+        print("\n")
+    
     # Final summary
     print("="*80)
     print("ASSIGNMENT EXECUTION SUMMARY")
@@ -242,8 +307,9 @@ def main():
         print("✓ All components completed successfully!")
         print("\nGenerated Files:")
         print("  - data/processed/supermarket_data_processed.csv")
+        print("  - data/processed/visualization_data/*.csv (17 supporting datasets)")
         print("  - models/[trained_models].pkl")
-        print("  - report/figures/[visualizations].png")
+        print("  - report/figures/*.png (7 business analytics dashboards + 2 maze visuals)")
     else:
         print(f"⚠ Some components failed. Check logs above for details.")
     
