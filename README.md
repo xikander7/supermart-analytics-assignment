@@ -3,20 +3,20 @@
 
 A comprehensive data engineering and machine learning project analyzing supermarket transaction data collected over two years. This project implements data cleaning pipelines, supervised learning models for business insights, and an optional reinforcement learning maze navigation system.
 
-## 🎯 Project Overview
+## Project Overview
 This assignment analyzes supermarket transaction data to:
-- **Clean, normalize, and transform** raw datasets into Python-compatible formats
-- **Apply supervised learning** to generate business-valued insights
-- **Implement reinforcement learning** for maze navigation (optional)
-- **Deliver actionable recommendations** for business decision-making
+- Clean, normalize, and transform raw datasets into Python-compatible formats
+- Apply supervised learning to generate business-valued insights
+- Implement reinforcement learning for maze navigation (optional)
+- Deliver actionable recommendations for business decision-making
 
-## 📊 Business Objectives
+## Business Objectives
 The project addresses three key business problems:
 1. **Sales Forecasting**: Predict sales for specific items during promotional periods
 2. **Promotion Impact Analysis**: Analyze the impact of promotional features on sales performance
 3. **Supermarket Performance Prediction**: Identify high-performing supermarkets based on transaction data
 
-## 🏗️ Repository Structure
+## Repository Structure
 ```
 supermart-analytics-assignment/
 ├── data/
@@ -35,7 +35,7 @@ supermart-analytics-assignment/
 └── README.md                  # This file
 ```
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Prerequisites
 - Python 3.8 or higher
@@ -99,14 +99,14 @@ python main.py
   python src/maze_navigation.py
   ```
 
-## 📋 Datasets
+## Datasets
 The project uses four main datasets:
 - **items.csv**: Product information (code, description, type, brand, size)
 - **Sales.csv**: Transaction data (code, amount, units, time, province, etc.)
 - **Promotion.csv**: Promotional data (code, supermarket, week, feature, display)
 - **Supermarkets.csv**: Store location data (supermarket number, postal code)
 
-## 🤖 Machine Learning Models
+## Machine Learning Models
 
 ### Supervised Learning Models
 1. **Random Forest Regressor** - Primary model for sales forecasting
@@ -117,7 +117,7 @@ The project uses four main datasets:
 ### Reinforcement Learning (Optional)
 - **Q-Learning Agent** - For maze navigation using epsilon-greedy exploration strategy
 
-## 📈 Key Features
+## Key Features
 - **Automated data cleaning** with comprehensive error handling
 - **Feature engineering** including seasonal patterns and promotional indicators
 - **Model evaluation** using RMSE, R², and business-relevant metrics
@@ -125,19 +125,19 @@ The project uses four main datasets:
 - **Comprehensive logging** for debugging and monitoring
 - **Modular design** for easy maintenance and extension
 
-## 🎯 Business Insights Generated
+## Business Insights Generated
 1. **Sales Forecasting Accuracy**: Models achieve 85%+ accuracy in predicting sales during promotional periods
 2. **Promotion Effectiveness**: Items with both feature advertisements and displays show 25-40% higher sales
 3. **Store Performance Drivers**: Location, customer base, and promotional strategy implementation are key success factors
 
-## 📊 Output Files
+## Output Files
 After running the analysis, the following files will be generated:
 - `data/processed/supermarket_data_processed.csv` - Cleaned and merged dataset
 - `models/*.pkl` - Trained machine learning models
 - `report/figures/*.png` - Visualizations and charts
 - Console output with detailed analysis results and business insights
 
-## 🛠️ Technical Stack
+## Technical Stack
 - **Python 3.8+**
 - **pandas** - Data manipulation and analysis
 - **numpy** - Numerical computations
@@ -145,20 +145,20 @@ After running the analysis, the following files will be generated:
 - **matplotlib/seaborn** - Data visualization
 - **pathlib** - File path management
 
-## 📝 Assessment Criteria Addressed
-- ✅ **Code quality, structure, and organization**
-- ✅ **Accuracy in data cleaning, normalization, and transformation**
-- ✅ **Understanding and demonstration of supervised learning**
-- ✅ **Implementation of business-valued solutions**
-- ✅ **Understanding and demonstration of reinforcement learning**
-- ✅ **Creative problem-solving approach**
-- ✅ **Effective use of Python-compatible tools**
-- ✅ **Documentation and clear instructions**
+## Assessment Criteria Addressed
+- Code quality, structure, and organization
+- Accuracy in data cleaning, normalization, and transformation
+- Understanding and demonstration of supervised learning
+- Implementation of business-valued solutions
+- Understanding and demonstration of reinforcement learning
+- Creative problem-solving approach
+- Effective use of Python-compatible tools
+- Documentation and clear instructions
 
-## 📧 Contact
+## Contact
 **Syed Shah**  
 Data Engineer Candidate  
 
-## 📄 License
+## License
 This project is developed as part of a technical assessment for Middleby Corporation.  
 
