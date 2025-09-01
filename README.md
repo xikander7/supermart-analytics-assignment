@@ -132,10 +132,12 @@ The project uses four main datasets:
 
 ## Output Files
 After running the analysis, the following files will be generated:
-- `data/processed/supermarket_data_processed.csv` - Cleaned and merged dataset
+- `data/processed/supermarket_data_processed.csv` - Cleaned and merged dataset (137MB, generated locally)
 - `models/*.pkl` - Trained machine learning models
 - `report/figures/*.png` - Visualizations and charts
 - Console output with detailed analysis results and business insights
+
+Note: The processed dataset is excluded from the repository due to size constraints but will be generated when you run the pipeline locally.
 
 ## Technical Stack
 - **Python 3.8+**
