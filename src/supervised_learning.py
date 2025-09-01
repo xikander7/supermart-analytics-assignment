@@ -330,7 +330,7 @@ class SupermarketAnalytics:
         output_path.mkdir(parents=True, exist_ok=True)
         
         # Set style
-        plt.style.use('seaborn-v0_8')
+        sns.set_style("whitegrid")
         
         # 1. Sales by promotion type
         if 'promotion_impact' in self.results:
