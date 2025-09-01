@@ -1,22 +1,33 @@
+"""Feature engineering helpers."""
+from __future__ import annotations
+import logging
+import pandas as pd
 import numpy as np
 
-def build_feature_matrix(df, target_col="amount"):
-    if target_col not in df.columns:
-        raise ValueError(f"Expected '{target_col}' as target column.")
-    y = df[target_col].astype(float)
-    X = df.drop(columns=[target_col], errors="ignore").copy()
+LOGGER = logging.getLogger(__name__)
 
-    # Remove raw datetime column from features if present
-    if "transaction_time" in X.columns:
-        X = X.drop(columns=["transaction_time"])
+def add_time_features(df: pd.DataFrame, date_col: str) -> pd.DataFrame:
+    df = df.copy()
+    d = pd.to_datetime(df[date_col], errors="coerce")
+    df["year"] = d.dt.year
+    df["month"] = d.dt.month
+    df["day"] = d.dt.day
+    df["dayofweek"] = d.dt.dayofweek
+    df["is_weekend"] = (df["dayofweek"] >= 5).astype(int)
+    df["year_week"] = d.dt.strftime("%Y-%U")
+    return df
 
-    num_cols = list(X.select_dtypes(include=[np.number]).columns)
-    cat_cols = [c for c in X.columns if c not in num_cols]
+def safe_numeric(df: pd.DataFrame, cols: list[str]) -> pd.DataFrame:
+    df = df.copy()
+    for c in cols:
+        if c in df.columns:
+            df[c] = pd.to_numeric(df[c], errors="coerce")
+    return df
 
-    # Simple imputation
-    for c in num_cols:
-        X[c] = X[c].fillna(X[c].median())
-    for c in cat_cols:
-        X[c] = X[c].astype(str).fillna("NA")
-
-    return X[num_cols + cat_cols], y, num_cols, cat_cols
+def agg_daily_store_sales(df: pd.DataFrame, date_col: str, store_col: str, value_col: str) -> pd.DataFrame:
+    grp = (df
+        .groupby([store_col, pd.Grouper(key=date_col, freq="D")])[value_col]
+        .sum()
+        .reset_index())
+    grp.rename(columns={value_col: "daily_store_sales", date_col: "date"}, inplace=True)
+    return grp

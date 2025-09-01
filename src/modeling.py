@@ -1,22 +1,30 @@
-from sklearn.preprocessing import OneHotEncoder, StandardScaler
-from sklearn.compose import ColumnTransformer
-from sklearn.pipeline import Pipeline
-from sklearn.linear_model import Ridge
-from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
+"""Model training utilities."""
+from __future__ import annotations
+import logging
+import pandas as pd
+import numpy as np
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import mean_squared_error, r2_score, mean_absolute_error
+from sklearn.ensemble import RandomForestRegressor
+import joblib
 
-def build_pipeline(num_cols, cat_cols):
-    pre = ColumnTransformer([
-        ("num", StandardScaler(with_mean=False), num_cols),
-        ("cat", OneHotEncoder(handle_unknown="ignore", sparse_output=True), cat_cols),
-    ])
-    model = Pipeline([("pre", pre), ("reg", Ridge(alpha=1.0))])
-    return model
+LOGGER = logging.getLogger(__name__)
 
-def train_evaluate(X_train, X_test, y_train, y_test, num_cols, cat_cols):
-    model = build_pipeline(num_cols, cat_cols)
+def train_regressor(df: pd.DataFrame, target: str, random_state: int = 42, rf_params: dict | None = None):
+    X = df.drop(columns=[target])
+    y = df[target]
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=0.2, random_state=random_state, shuffle=True
+    )
+    model = RandomForestRegressor(**(rf_params or {}))
     model.fit(X_train, y_train)
-    pred = model.predict(X_test)
-    mae = mean_absolute_error(y_test, pred)
-    rmse = mean_squared_error(y_test, pred, squared=False)
-    r2 = r2_score(y_test, pred)
-    return model, {"MAE": mae, "RMSE": rmse, "R2": r2}
+    y_pred = model.predict(X_test)
+    rmse = mean_squared_error(y_test, y_pred, squared=False)
+    mae = mean_absolute_error(y_test, y_pred)
+    r2 = r2_score(y_test, y_pred)
+    metrics = {"rmse": float(rmse), "mae": float(mae), "r2": float(r2)}
+    return model, metrics, (X_test, y_test, y_pred)
+
+def save_model(model, path: str):
+    joblib.dump(model, path)
+    LOGGER.info("Saved model -> %s", path)
