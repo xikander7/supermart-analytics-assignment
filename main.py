@@ -7,7 +7,7 @@ This script runs the complete data analysis pipeline including:
 2. Supervised learning for business insights
 3. Optional maze navigation reinforcement learning
 4. Comprehensive reporting with concrete metrics
-5. PDF report generation addressing all reviewer requirements
+5. PDF report generation with detailed analysis
 
 Enhanced for reproducibility and comprehensive evidence generation.
 """
@@ -282,7 +282,7 @@ def run_comprehensive_metrics_generation():
         return False
 
 def run_pdf_report_generation():
-    """Generate comprehensive PDF report addressing all reviewer requirements"""
+    """Generate comprehensive PDF report with detailed analysis and findings"""
     logger.info("="*60)
     logger.info("STEP 6: PDF REPORT GENERATION")
     logger.info("="*60)

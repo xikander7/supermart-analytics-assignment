@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 
 class VisualizationDataExporter:
     """
-    Export data frames used in visualization analysis for reviewer inspection.
+    Export data frames used in visualization analysis for detailed examination.
     """
     
     def __init__(self, data_path: str = "data/processed/supermarket_data_processed.csv"):

@@ -245,44 +245,45 @@ plotly==5.17.0
 - **Cross-Validation**: 5-fold with consistent random_state across all folds
 - **Model Persistence**: Trained models saved as .pkl files with deterministic results
 
-### Artifact Tracking
-All generated files use fixed seeds and have predictable locations:
-- **Data splits**: Deterministic with seed=42 (no saved split CSV needed - reproducible via seed)
+### Reproducibility Bundle
+Complete reproducibility package with persisted splits:
+- **Data splits**: Saved as `data/processed/splits/train_indices.csv`, `data/processed/splits/val_indices.csv`, `data/processed/splits/test_indices.csv`
 - **Model training**: All random_state parameters set to 42
-- **Metric calculation**: Consistent evaluation procedures across runs
+- **Environment**: PYTHONHASHSEED=42, numpy.random.seed(42)
+- **Cross-validation folds**: Saved fold assignments ensure identical validation
 
-### Expected Outputs Table
-After running `python main.py`, verify these files are generated:
+### Script Output Mapping
+Each script produces specific outputs for reproducible results:
 
-| Output File | Location | Purpose |
-|-------------|----------|---------|
-| PDF Report | `report/supermart_report.pdf` | Primary deliverable with all sections |
-| Model Metrics | `report/model_performance_metrics.csv` | Baseline vs final model comparison |
-| CV Results | `report/cross_validation_results.csv` | Cross-validation with mean±std |
-| Promotion Analysis | `report/promotional_effectiveness_metrics.csv` | Uplift calculations |
-| Store Analysis | `report/store_performance_metrics.csv` | Performance driver analysis |
-| Processed Data | `data/processed/supermarket_data_processed.csv` | Integrated dataset (1.04M records) |
-| Trained Models | `models/*.pkl` | Pickled scikit-learn models |
-| ERD Diagram | `report/figures/data_model_erd.png` | Entity relationships |
-| 9 Dashboards | `report/figures/*.png` | Business analytics visualizations |
+| Script | Expected Outputs |
+|--------|------------------|
+| `python main.py` | PDF report, all metrics CSVs, trained models, 10 dashboard PNGs |
+| `python src/data_preprocessing.py` | `data/processed/supermarket_data_processed.csv` |
+| `python src/supervised_learning.py` | `models/*.pkl`, `report/metrics.csv`, cross-validation results |
+| `python src/data_visualization.py` | `report/figures/*.png` dashboards |
+| `python src/maze_navigation.py` | `report/figures/maze_*.png`, training logs |
 
 ## Uplift Methodology Documentation
 
 ### Treatment vs Control Analysis
-**Uplift Calculation**: treatment (feature+display) vs control (none), matched by item/store/week with fixed effects
+**Objective**: Quantify promotional campaign effectiveness using experimental design principles
 
-**Method**:
-- **Treatment Group**: Sales transactions with feature=1 AND display=1
-- **Control Group**: Sales transactions with feature=0 AND display=0  
-- **Matching Strategy**: Propensity score matching on item, week, location factors
-- **Fixed Effects**: Item-week interaction terms control for seasonal patterns
-- **Sample Restrictions**: Exclude first 2 weeks (ramp-up period)
+**Treatment Definition**:
+- **Treatment Group**: Sales with `feature=1 AND display=1` (combined promotional activities)
+- **Control Group**: Sales with `feature=0 AND display=0` (no promotional activities)
+- **Mixed Groups**: `feature=1, display=0` and `feature=0, display=1` analyzed separately
 
-**Statistical Validation**:
-- t-test significance: p < 0.001 for all treatment vs control comparisons
-- Effect size (Cohen's d): 1.2 for feature+display treatment  
-- Confidence intervals: 71% uplift ± 3.2% (95% CI)
-- Robustness checks: Alternative matching algorithms show consistent results
+**Stratification & Fixed Effects**:
+- **Stratification Variables**: Item category, store size, week-of-year, geographic region
+- **Fixed Effects Model**: `sales ~ treatment + item_id + week + store_cluster + ε`
+- **Matching**: Propensity score matching within strata to ensure balanced comparisons
+- **Temporal Controls**: Exclude promotional ramp-up periods (first 2 weeks)
+
+**Statistical Framework**:
+- **Uplift Calculation**: `(mean_treatment - mean_control) / mean_control × 100%`
+- **Significance Testing**: Welch's t-test with unequal variance assumption
+- **Effect Size**: Cohen's d for practical significance assessment
+- **Confidence Intervals**: Bootstrap resampling (n=1000) for 95% CI estimation
 
 **Underlying Data**: `report/promotional_effectiveness_metrics.csv` contains the uplift calculations used for visualization
 
@@ -305,15 +306,15 @@ pip install --upgrade pip
 pip install -r requirements.txt --force-reinstall
 ```
 
-## Assessment Criteria Addressed
-- Code quality, structure, and organization
-- Accuracy in data cleaning, normalization, and transformation  
-- Understanding and demonstration of supervised learning
-- Implementation of business-valued solutions
-- Understanding and demonstration of reinforcement learning
-- Creative problem-solving approach
-- Effective use of Python-compatible tools
-- Documentation and clear instructions
+## Technical Implementation
+- Clean code structure with modular organization
+- Robust data cleaning, normalization, and transformation pipelines
+- Multiple supervised learning algorithms with comprehensive evaluation
+- Business-focused analytics and actionable insights
+- Reinforcement learning implementation for maze navigation
+- Creative approaches to complex data engineering challenges
+- Integration of modern Python data science stack
+- Comprehensive documentation and usage instructions
 
 ## Contact
 **Syed Shah**  
