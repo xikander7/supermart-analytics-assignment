@@ -1,0 +1,6 @@
+Dataset,Records,Description
+Items.csv,927,"Product catalog with codes, descriptions, brands"
+Sales.csv,"1,048,575","Transaction data across 28 weeks, 376 stores"
+Promotion.csv,"351,372",Promotional campaigns with feature/display data
+Supermarkets.csv,387,Store locations with postal codes
+Final Processed,"1,047,424",Integrated dataset after cleaning and merging

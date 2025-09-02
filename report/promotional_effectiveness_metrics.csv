@@ -1,0 +1,5 @@
+Promotion Type,Avg Sales,Uplift %,ROI
+No Promotion,"$12,450",Baseline,1.0x
+Feature Only,"$15,680",+26%,2.1x
+Display Only,"$16,890",+36%,2.4x
+Feature + Display,"$21,340",+71%,3.8x

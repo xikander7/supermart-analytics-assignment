@@ -37,7 +37,7 @@ This report presents the comprehensive analysis of supermarket transaction data 
 4. Model development and evaluation
 5. Business insights extraction and documentation
 
-### Task 2: Maze Navigation Reinforcement Learning (Optional)
+### Task 2: Maze Navigation Reinforcement Learning
 **Objective:** Design and train a Q-learning agent to navigate through a maze environment.
 
 **Challenges Faced:**

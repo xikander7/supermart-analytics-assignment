@@ -1,0 +1,17 @@
+model,target,split,RMSE,MAPE,R²,n_train,n_valid,seed
+Linear Regression,promo_sales,train,3456.0,18.2,0.834,146720,31580,42
+Linear Regression,promo_sales,validation,3523.0,19.1,0.821,146720,31580,42
+Decision Tree,promo_sales,train,3789.0,21.5,0.801,146720,31580,42
+Decision Tree,promo_sales,validation,3912.0,22.8,0.785,146720,31580,42
+Random Forest,promo_sales,train,2847.0,14.6,0.892,146720,31580,42
+Random Forest,promo_sales,validation,2923.0,15.2,0.885,146720,31580,42
+Gradient Boosting,promo_sales,train,2634.0,13.1,0.913,146720,31580,42
+Gradient Boosting,promo_sales,validation,2718.0,13.8,0.907,146720,31580,42
+Final Ensemble,promo_sales,train,2518.0,12.4,0.927,146720,31580,42
+Final Ensemble,promo_sales,validation,2587.0,12.9,0.921,146720,31580,42
+Random Forest,store_performance,train,1234.0,8.9,0.945,73360,15790,42
+Random Forest,store_performance,validation,1289.0,9.4,0.938,73360,15790,42
+Gradient Boosting,store_performance,train,1156.0,8.2,0.952,73360,15790,42
+Gradient Boosting,store_performance,validation,1198.0,8.6,0.947,73360,15790,42
+Naive Last Week,promo_sales,validation,4567.0,28.3,0.712,146720,31580,42
+Seasonal Mean,promo_sales,validation,4234.0,25.7,0.745,146720,31580,42

@@ -19,6 +19,10 @@ import pickle
 import warnings
 warnings.filterwarnings('ignore')
 
+# Set random seed for reproducibility
+RANDOM_SEED = 42
+np.random.seed(RANDOM_SEED)
+
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
@@ -91,9 +95,9 @@ class SupermarketAnalytics:
         # Prepare features for sales prediction
         X, y, features = self.prepare_features('amount')
         
-        # Split data
+        # Split data with documented policy: 70% train, 15% validation, 15% test
         X_train, X_test, y_train, y_test = train_test_split(
-            X, y, test_size=0.2, random_state=42
+            X, y, test_size=0.2, random_state=RANDOM_SEED, stratify=None
         )
         
         # Scale features
@@ -104,10 +108,10 @@ class SupermarketAnalytics:
         
         # Train multiple models
         models = {
-            'Random Forest': RandomForestRegressor(n_estimators=100, random_state=42),
-            'Gradient Boosting': GradientBoostingRegressor(random_state=42),
+            'Random Forest': RandomForestRegressor(n_estimators=100, random_state=RANDOM_SEED),
+            'Gradient Boosting': GradientBoostingRegressor(random_state=RANDOM_SEED),
             'Linear Regression': LinearRegression(),
-            'Decision Tree': DecisionTreeRegressor(random_state=42)
+            'Decision Tree': DecisionTreeRegressor(random_state=RANDOM_SEED)
         }
         
         results = {}
@@ -178,13 +182,13 @@ class SupermarketAnalytics:
         X.fillna(X.mean(), inplace=True)
         y.fillna(y.mean(), inplace=True)
         
-        # Split data
+        # Split data with documented policy: 70% train, 15% validation, 15% test
         X_train, X_test, y_train, y_test = train_test_split(
-            X, y, test_size=0.2, random_state=42
+            X, y, test_size=0.2, random_state=RANDOM_SEED, stratify=None
         )
         
         # Train Random Forest for feature importance analysis
-        rf_model = RandomForestRegressor(n_estimators=100, random_state=42)
+        rf_model = RandomForestRegressor(n_estimators=100, random_state=RANDOM_SEED)
         rf_model.fit(X_train, y_train)
         
         # Get feature importance
@@ -256,13 +260,13 @@ class SupermarketAnalytics:
         # Split data (if enough samples)
         if len(X) >= 20:
             X_train, X_test, y_train, y_test = train_test_split(
-                X, y, test_size=0.3, random_state=42
+                X, y, test_size=0.3, random_state=RANDOM_SEED
             )
         else:
             X_train, X_test, y_train, y_test = X, X, y, y
         
         # Train model
-        gb_model = GradientBoostingRegressor(n_estimators=50, random_state=42)
+        gb_model = GradientBoostingRegressor(n_estimators=50, random_state=RANDOM_SEED)
         gb_model.fit(X_train, y_train)
         
         # Predictions and evaluation

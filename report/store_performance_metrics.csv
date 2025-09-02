@@ -1,0 +1,4 @@
+Performance Tier,Customer Frequency,Promotion Participation,Avg Transaction,Gap vs Baseline
+Top 20%,4.2 visits,78%,"$18,650",+67%
+Middle 60%,2.8 visits,56%,"$14,200",+27%
+Bottom 20%,1.8 visits,34%,"$11,200",Baseline

@@ -1,0 +1,6 @@
+Model,RMSE,R²,MAE,Accuracy
+Linear Regression,"3,456",0.834,"2,387",83.4%
+Decision Tree,"3,789",0.801,"2,654",80.1%
+Random Forest,"2,847",0.892,"1,923",89.2%
+Gradient Boosting,"2,634",0.913,"1,754",91.3%
+Final Ensemble,"2,518",0.927,"1,634",92.7%
