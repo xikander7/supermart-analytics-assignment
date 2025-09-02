@@ -1,7 +1,9 @@
 # Supermart Analytics Assignment
 **Data Engineer Test - Middleby Corporation**
 
-**[Download the Full Report (PDF)](report/supermart_report.pdf)** | **[View Metrics Data](report/metrics.csv)** | **[Data Model ERD](report/figures/data_model_erd.png)**
+## 📄 **[Download Full Report (PDF)](report/supermart_report.pdf)**
+
+**[View Metrics Data](report/metrics.csv)** | **[Data Model ERD](report/figures/data_model_erd.png)**
 
 A comprehensive data engineering and machine learning project analyzing supermarket transaction data collected over two years. This project implements data cleaning pipelines, supervised learning models for business insights, and a reinforcement learning maze navigation system.
 
