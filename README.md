@@ -1,7 +1,7 @@
 # Supermart Analytics Assignment
 **Data Engineer Test - Middleby Corporation**
 
-## 📄 **[Download Full Report (PDF)](report/supermart_report.pdf)**
+## **[Download Full Report (PDF)](report/supermart_report.pdf)**
 
 **[View Metrics Data](report/metrics.csv)** | **[Data Model ERD](report/figures/data_model_erd.png)**
 
@@ -67,11 +67,44 @@ supermart-analytics-assignment/
 
 ### Usage
 
+#### Quick Start Script Order
+For step-by-step execution, run scripts in this sequence:
+
+```bash
+# Step 1: Clean and process raw data
+python src/data_preprocessing.py
+
+# Step 2: Train ML models and generate predictions  
+python src/supervised_learning.py
+
+# Step 3: Create business analytics dashboards
+python src/data_visualization.py
+
+# Step 4: Export underlying visualization data
+python src/export_visualization_data.py
+
+# Step 5 (Optional): Run reinforcement learning maze
+python src/maze_navigation.py
+```
+
 #### Complete Pipeline (Recommended)
-Execute the entire analysis pipeline:
+Execute the entire analysis pipeline using the automated runner:
+
+**Cross-platform:**
+```bash
+python run_all.py
+```
+
+**Windows:**
+```batch
+run_all.bat
+```
+
+**Alternative:**
 ```bash
 python main.py
 ```
+
 Generates: PDF report, metrics tables, dashboards, and supporting files
 
 #### Generate Only PDF Report & Metrics
@@ -322,6 +355,24 @@ pip install -r requirements.txt --force-reinstall
 **Syed Shah**  
 Data Engineer Candidate  
 
-## License
-This project is developed as part of a technical assessment for Middleby Corporation.  
+## Development Tools & AI Assistance
+
+This project was developed using modern development tools and AI assistance to enhance productivity and code quality:
+
+**AI Tools Used:**
+- **Claude (Anthropic)**: Code review, documentation enhancement, and technical problem-solving
+- **GitHub Copilot**: Code completion and boilerplate generation  
+- **Gemini (Google)**: Research assistance and alternative solution exploration
+
+**Development Environment:**
+- **Primary Language**: Python 3.8+
+- **IDE**: Visual Studio Code with Python extensions
+- **Version Control**: Git with conventional commits
+- **Package Management**: pip with requirements.txt
+
+The use of AI tools accelerated development while maintaining code quality and originality. All technical decisions, business logic, and analytical insights represent independent work and domain expertise.
+
+---
+
+**Developed for Middleby Corporation - Data Engineer Technical Assessment**  
 
